@@ -1,29 +1,34 @@
-# vue3-comp-crud-api
+# Vue 3 Composition CRUD with API Call
+#### Note:- I have created Fake API using json-server package
+### Watch Video Tutorial: Coming Soon
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+### Install All Required Packages
 
 ```sh
 npm install
+
 ```
 
-### Compile and Hot-Reload for Development
+### Install Json Server 
+
+```sh
+npm install -g json-server
+
+```
+
+### Run Project
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+### Start Json Server
 
 ```sh
-npm run build
+json-server --watch db.json --port 3333
 ```
+
+### Project Screenshots
+![alt text](https://github.com/geekyshow1/vue3-comp-crud-api/blob/master/screenshots/1.JPG)
+![alt text](https://github.com/geekyshow1/vue3-comp-crud-api/blob/master/screenshots/2.JPG)
+![alt text](https://github.com/geekyshow1/vue3-comp-crud-api/blob/master/screenshots/3.JPG)
