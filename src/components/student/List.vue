@@ -5,13 +5,26 @@ import {
   TrashIcon,
   UserPlusIcon,
 } from "@heroicons/vue/24/solid";
+import { onMounted } from "vue";
 import { RouterLink } from "vue-router";
+import useStudent from "../../composables/studentApi";
+
+const {
+  studentData,
+  error,
+  statusCode,
+  delError,
+  getAllStudent,
+  destroyStudent,
+} = useStudent();
+onMounted(getAllStudent);
 
 const deleteStudent = async (id) => {
   if (!window.confirm("Are you sure ?")) {
     return;
   }
-  console.log("Deleted");
+  await destroyStudent(id);
+  await getAllStudent();
 };
 </script>
 
@@ -33,8 +46,14 @@ const deleteStudent = async (id) => {
         </RouterLink>
       </div>
     </div>
-
-    <table class="table-auto w-full">
+    <div
+      class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg font-medium"
+      role="alert"
+      v-if="error"
+    >
+      Oops! Error encountered: {{ error.message }}
+    </div>
+    <table class="table-auto w-full" v-else-if="studentData">
       <thead class="bg-slate-600 text-white">
         <tr>
           <th class="py-1">No</th>
@@ -44,25 +63,39 @@ const deleteStudent = async (id) => {
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr>
-          <td class="py-2">1</td>
-          <td class="py-2">Sonam</td>
-          <td class="py-2">sonam@gmail.com</td>
+        <tr v-for="({ id, stuname, email }, i) in studentData" :key="id">
+          <td class="py-2">{{ ++i }}</td>
+          <td class="py-2">{{ stuname }}</td>
+          <td class="py-2">{{ email }}</td>
           <td class="py-2">
-            <RouterLink :to="{ name: 'view', params: { id: 1 } }">
+            <RouterLink :to="{ name: 'view', params: { id: id } }">
               <EyeIcon class="text-blue-500 h-6 w-6 inline" />
             </RouterLink>
-            <RouterLink :to="{ name: 'edit', params: { id: 1 } }">
+            <RouterLink :to="{ name: 'edit', params: { id: id } }">
               <PencilIcon class="text-emerald-500 h-6 w-6 inline mx-6" />
             </RouterLink>
             <TrashIcon
               class="text-red-500 h-6 w-6 inline cursor-pointer"
-              @click="deleteStudent(1)"
+              @click="deleteStudent(id)"
             />
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg font-medium"
+      role="alert"
+      v-if="delError"
+    >
+      Unable to Delete Student: {{ delError.message }}
+    </div>
+    <div
+      class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg font-medium"
+      role="alert"
+      v-if="statusCode === 200"
+    >
+      Student Deleted Successfully
+    </div>
   </div>
 </template>
 
